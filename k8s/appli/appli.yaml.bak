@@ -1,0 +1,94 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: cesi4
+  labels:
+    kubernetes.io/metadata.name: cesi4
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cesi4-demo-java
+  namespace: cesi4
+  labels:
+    app: cesi4-demo-java
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: cesi4-demo-java
+  template:
+    metadata:
+      labels:
+        app: cesi4-demo-java
+    spec:
+      containers:
+        - name: cesi4-demo-java
+          image: antoinecvlz/cesi4-demo-boost-startup:b5c917bc3154bcf1519364745f96783266c80906
+          ports:
+            - containerPort: 8080
+              name: http
+          env:
+            - name: SPRING_MONGODB_URI
+              value: "mongodb://mongodb.mongodb.svc.cluster.local:27017/demo"
+            - name: SPRING_MONGODB_DATABASE
+              value: "demo"
+            - name: MONGODB_COLLECTION_NAME
+              value: "personse"
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 20
+            periodSeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cesi4-demo-java-service
+  namespace: cesi4
+  labels:
+    app: cesi4-demo-java
+spec:
+  type: ClusterIP
+  selector:
+    app: cesi4-demo-java
+  ports:
+    - port: 80
+      targetPort: 8080
+      protocol: TCP
+      name: http
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: cesi4-demo-java-ingress
+  namespace: cesi4
+  annotations:
+    # Pour K3s avec Traefik
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+spec:
+  rules:
+    - host: cesi4.beincloud.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: cesi4-demo-java-service
+                port:
+                  number: 80
