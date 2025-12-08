@@ -5,7 +5,7 @@ on:
     secrets:
       NVD_API_KEY:
         required: false
-        description: 'NVD API Key for faster dependency database download'
+        description: "NVD API Key for faster dependency database download"
 
 permissions:
   security-events: write
@@ -23,9 +23,9 @@ jobs:
       - name: ☕ Set up JDK
         uses: actions/setup-java@v4
         with:
-          java-version: '25'
-          distribution: 'liberica'
-          cache: 'maven'
+          java-version: "25"
+          distribution: "liberica"
+          cache: "maven"
 
       - name: 🔍 Check NVD API Key availability
         env:
@@ -48,11 +48,13 @@ jobs:
             echo "🚀 Running with NVD API Key for faster download"
             mvn org.owasp:dependency-check-maven:check \
               -DfailBuildOnCVSS=7 \
+              -DsuppressionFiles=.owasp-suppressions.xml \
               -DnvdApiKey=${NVD_API_KEY}
           else
             echo "🐌 Running without NVD API Key (slower download)"
             mvn org.owasp:dependency-check-maven:check \
-              -DfailBuildOnCVSS=7
+              -DfailBuildOnCVSS=7 \
+              -DsuppressionFiles=.owasp-suppressions.xml
           fi
 
       - name: 📤 Upload Dependency Check SARIF
@@ -65,10 +67,10 @@ jobs:
       - name: 🔍 Run Trivy SCA (filesystem scan)
         uses: aquasecurity/trivy-action@0.27.0
         with:
-          scan-type: 'fs'
-          format: 'json'
-          output: 'trivy-deps-report.json'
-          severity: 'CRITICAL,HIGH,MEDIUM'
+          scan-type: "fs"
+          format: "json"
+          output: "trivy-deps-report.json"
+          severity: "CRITICAL,HIGH,MEDIUM"
           ignore-unfixed: true
 
       - name: 📤 Upload Trivy SCA report
