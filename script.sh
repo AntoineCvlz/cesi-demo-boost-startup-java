@@ -1,5 +1,5 @@
 # IMPORTANT: Remplacez X par VOTRE numéro (exemple: 3 si vous êtes étudiant n°3)
-STUDENT_NUMBER=X
+STUDENT_NUMBER=4
 
 echo "Configuration pour l'étudiant n°${STUDENT_NUMBER}"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
