@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
         - name: cesi4-demo-java
-          image: antoinecvlz/cesi4-demo-boost-startup:05494fd690c30c02576c8a721bdab3bffa4ca257
+          image: antoinecvlz/cesi4-demo-boost-startup:743492fde2a0a57960e73d73447a895de57cddec
           ports:
             - containerPort: 8080
               name: http
