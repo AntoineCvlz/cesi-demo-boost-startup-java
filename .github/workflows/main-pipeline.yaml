@@ -85,7 +85,7 @@ jobs:
 
   deploy-k8s:
     # needs: dast-dynamic-security-testing
-    uses: ./.github/workflows/deploy-k8s.yml
+    uses: ./.github/workflows/deploy-k8s.yaml
     secrets: inherit
 
   send-notifications:
