@@ -3,6 +3,8 @@ name: Main CI/CD Pipeline
 on:
   push:
     branches: ["main"]
+  paths_ignore:
+    - 'k8s/appli/appli.yaml'
   pull_request:
     branches: ["main"]
   schedule:
