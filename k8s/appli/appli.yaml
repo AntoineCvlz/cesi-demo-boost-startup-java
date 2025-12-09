@@ -39,7 +39,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: cesi4-demo-java
-          image: antoinecvlz/cesi4-demo-boost-startup:4a5b01445b1dfc4bfdbf170d5be386f2bcfbb7d6
+          image: antoinecvlz/cesi4-demo-boost-startup:0c3e8fe9abcf4fdf46c465fd39b660d4bbdec863
           ports:
             - containerPort: 8080
               name: http
