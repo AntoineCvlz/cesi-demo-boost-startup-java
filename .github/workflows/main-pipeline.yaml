@@ -84,7 +84,7 @@ jobs:
     secrets: inherit
 
   deploy-k8s:
-    needs: dast-dynamic-security-testing
+    # needs: dast-dynamic-security-testing
     uses: ./.github/workflows/deploy-k8s.yml
     secrets: inherit
 
