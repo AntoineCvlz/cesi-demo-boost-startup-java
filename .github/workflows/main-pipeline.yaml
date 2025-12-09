@@ -83,8 +83,13 @@ jobs:
     uses: ./.github/workflows/dast-zap-test.yml
     secrets: inherit
 
+  deploy-k8s:
+    needs: dast-dynamic-security-testing
+    uses: ./.github/workflows/deploy-k8s.yml
+    secrets: inherit
+
   send-notifications:
-    needs: deploy-docker
+    needs: [deploy-docker, deploy-k8s]
     runs-on: ubuntu-latest
     if: always()
     steps:
